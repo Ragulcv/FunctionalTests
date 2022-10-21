@@ -1,9 +1,8 @@
-This is a sample project which uses GoLang as the language for creating certain different types of functions such as Converter and Calculation. 
+Hey everyone this is a sample project written in GoLanguage , A http api request is passed to validate a string input.Unit test for the api's request has been written for two scenario's default greeting and specific greeting to ensure the quality of the code.
 
-Converter : This function allows the user to remove speacial characters embedded in the input only strings and numbers will be allowed to be displayed and added as a single output text 
+Original Code Source:
+github link : https://github.com/Ragulcv/FunctionalTests
 
-Calcultion : This function uses mathematical calucation for performing basic functions 
-
-Unit Tests for all the functions are written and tests will be passed successfully 
-
-Will dockerize the entire project into an image and will be running it in a container instance.
+Steps To run the code from docker:
+step 1: docker build -t golanghttp .
+Step 2: docker run -p 8080:8080 -tid golanghttp
