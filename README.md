@@ -4,5 +4,9 @@ Original Code Source:
 github link : https://github.com/Ragulcv/FunctionalTests
 
 Steps To run the code from docker:
-step 1: docker build -t golanghttp .
-Step 2: docker run -p 8080:8080 -tid golanghttp
+step 1: "docker build -t golanghttp ."
+Step 2: "docker run -p 8080:8080 -tid golanghttp"
+
+Navigate to your local browser and paste the below links to view the application running from the server
+* http://localhost:8080/
+* http://localhost:8080/?name=ragul
