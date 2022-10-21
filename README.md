@@ -1,7 +1,7 @@
 Hey everyone this is a sample project written in GoLanguage , A http api request is passed to validate a string input.Unit test for the api's request has been written for two scenario's default greeting and specific greeting to ensure the quality of the code.
 
 Original Code Source:
-github link : https://github.com/Ragulcv/FunctionalTests
+github link : https://github.com/Ragulcv/GolangApi
 
 Steps To run the code from docker:
 step 1: "docker build -t golanghttp ."
