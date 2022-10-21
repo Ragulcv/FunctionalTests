@@ -1,7 +1,7 @@
 FROM golang:latest
 
 # Set the Current Working Directory inside the container
-WORKDIR $C:\Users\SNEKA\FunctionalTests
+WORKDIR $GOPATH/src/github.com/Ragulcv/FunctionalTests
 
 # Copy everything from the current directory to the PWD(Present Working Directory) inside the container
 COPY . .
