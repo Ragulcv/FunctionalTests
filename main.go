@@ -1,35 +1,68 @@
 package main
 
 import (
-	"fmt"
-	"strings"
-	"unicode"
+	"context"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/gorilla/mux"
 )
 
+func handler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	name := query.Get("name")
+	log.Printf("Received request for %s\n", name)
+	w.Write([]byte(CreateGreeting(name)))
+}
+
+func CreateGreeting(name string) string {
+	if name == "" {
+		name = "Guest"
+	}
+	return "Hello, " + name + "\n"
+}
+
 func main() {
-	fmt.Println(converter("this is the#$*%$## sample text @@#$&&&&&&for you buddy$$$&#^#*&*"))
-	fmt.Println(calculation(100))
-}
+	// Create Server and Route Handlers
+	r := mux.NewRouter()
 
-// first function
+	r.HandleFunc("/", handler)
 
-func converter(input string) (string, error) {
-	if len(input) == 11 {
-		return "", fmt.Errorf("input length is 11 and it is not allowed")
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         ":8080",
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
-	splitter := func(c rune) bool {
-		return !unicode.IsLetter(c) && !unicode.IsNumber(c)
-	}
-	splits := strings.FieldsFunc(input, splitter)
-	out := strings.Join(splits, "__")
+	// Start Server
+	go func() {
+		log.Println("Starting Server")
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
-	return out, nil
+	// Graceful Shutdown
+	waitForShutdown(srv)
 }
 
-// second function
+func waitForShutdown(srv *http.Server) {
+	interruptChan := make(chan os.Signal, 1)
+	signal.Notify(interruptChan, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-func calculation(x int) (result int) {
-	result = x * 2
-	return result
+	// Block until we receive our signal.
+	<-interruptChan
+
+	// Create a deadline to wait for.
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	srv.Shutdown(ctx)
+
+	log.Println("Shutting down")
+	os.Exit(0)
 }

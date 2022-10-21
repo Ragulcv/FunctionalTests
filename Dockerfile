@@ -1,10 +1,19 @@
 FROM golang:latest
 
-RUN mkdir /build
-WORKDIR /build
+# Set the Current Working Directory inside the container
+WORKDIR $C:\Users\SNEKA\FunctionalTests
 
-RUN export GO111MODULE=on
-RUN cd /build && git clone https://github.com/Ragulcv/FunctionalTests.git
+# Copy everything from the current directory to the PWD(Present Working Directory) inside the container
+COPY . .
 
-RUN cd \Users\SNEKA\FunctionalTests\main && go build
-RUN go run test-v
+# Download all the dependencies
+RUN go get -d -v ./...
+
+# Install the package
+RUN go install -v ./...
+
+# This container exposes port 8080 to the outside world
+EXPOSE 8080
+
+# Run the executable
+CMD ["FunctionalTests"]
