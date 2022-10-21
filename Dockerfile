@@ -6,5 +6,5 @@ WORKDIR /build
 RUN export GO111MODULE=on
 RUN cd /build && git clone https://github.com/Ragulcv/FunctionalTests.git
 
-RUN cd /build/golangtest/main && go build
+RUN cd \Users\SNEKA\FunctionalTests\main && go build
 RUN go run test-v
