@@ -1,19 +1,14 @@
 FROM golang:latest
 
-# Set the Current Working Directory inside the container
-WORKDIR $GOPATH/src/github.com/Ragulcv/FunctionalTests
+RUN  mkdir /build
+WORKDIR /build
 
-# Copy everything from the current directory to the PWD(Present Working Directory) inside the container
-COPY . .
+RUN export GO111MODULE=on
+RUN go get github.com/ragulcv/FunctionalTests/main
+RUN cd /build && git clone https://github.com/Ragulcv/FunctionalTests.git
 
-# Download all the dependencies
-RUN go get -d -v ./...
+RUN cd /build/FunctionalTests/main && go build
 
-# Install the package
-RUN go install -v ./...
-
-# This container exposes port 8080 to the outside world
 EXPOSE 8080
 
-# Run the executable
-CMD ["FunctionalTests"]
+ENTRYPOINT [ "/buildFunctionalTests/main/main" ]
